@@ -43,6 +43,18 @@ class Post {
             res.status(500).json({message:err.message})
         })
     }
+
+    static showOnePost(req,res){
+        console.log(req.headers.id);
+        
+        postModel.findById(req.headers.id)
+        .then(dataPost=>{
+            res.status(200).json({comment:dataPost.comment})
+        })
+        .catch(err=>{
+            res.status(500).json({message:err.message})
+        })
+    }
     
 
     static delete(req,res) {
@@ -54,6 +66,48 @@ class Post {
             res.status(500).json({message:err.message})
         })
     } 
+
+    static updateLike(req,res) {
+        console.log(req.body.postId)
+        postModel.findById(req.body.postId)
+        .then(dataPost=>{
+            if(dataPost) {
+                dataPost.like.push(req.body.username)
+                dataPost.save()
+                res.status(200).json({message:"like updated"})
+            }else{
+                res.status(200).json({message:"post not found"})
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({message:err.message})
+        })
+    }
+
+    static addComment(req,res) {
+        console.log(req.body.postId,"=====");
+        
+        const dataComment = {
+            username: req.body.username,
+            content: req.body.content
+        }
+        
+        postModel.findById(req.body.postId)
+        .then(dataPost=>{
+            // console.log(dataPost);
+            
+            if(dataPost) {
+                dataPost.comment.push(dataComment)
+                dataPost.save()
+                res.status(200).json({message:"comment updated"})
+            }else{
+                res.status(200).json({message:"post not found"})
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({message:err.message})
+        })
+    }
 
 }
 

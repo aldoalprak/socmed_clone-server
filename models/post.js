@@ -4,14 +4,8 @@ const ObjectId = Schema.Types.ObjectId
 
 const postSchema = new Schema({
     content: String,
-    commentId:[{
-        type: ObjectId,
-        ref: "Comment"
-    }],
-    likeId:[{
-        type: ObjectId,
-        ref: "Like"
-    }],
+    comment:[],
+    like:[],
     userId: {
         type: ObjectId,
         ref: "User"
